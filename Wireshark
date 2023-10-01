@@ -1,0 +1,81 @@
+1.	Forensic Questions
+-	Lsof -i -P -n
+-	Sudo ss -ln | grep tcp
+-	Sudo lsof -i:<port>
+
+2.	Read me
+
+3.	Firewall 
+- sudo apt install gufw
+
+4.	Users - changing unsecure user passwords
+-	Sudo usermod –a –G groupname username
+
+5.	Firefox
+
+6.	Settings + Updates 
+
+7.	Deleting stuff
+
+8.	Ssh root permit
+
+9.	Make sure the etc/passwd file isnt accessible without admin/root permission
+
+10.	PAM - Cd /etc/pam.d
+    Sudo apt install libpam-cracklib
+    Sudo nano common-password
+    Change line with pan_unix.so remember to 5 “remember=5”
+    Change line with pam_unix.so minlen to 8
+    Add line with pam_cracklib.so “ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1” to end of line
+    Sudo nano ../login.defs
+    Scroll to PASS_MAX_DAYS 90
+    Set PASS_MIN_DAYS to 10
+    Set PASS_WARN_AGE to 7
+    Sudo nano common-auth
+    ADD THIS TO THE BOTTOM OF THE FILE >>
+    auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800
+    	deny sets failed login attempts
+11.	File Permissions 
+    Correct file permissions :
+    Chmod -R 444 /var/log
+    Chmod 440 /etc/passwd
+    Chmod 440 /etc/shadow
+    Chmod 440 /etc/group
+    Chmod -R 444 /etc/ssh
+    Insecure file permissions 
+    To the root of a server local file or passwd file
+    Chmod -w or -r or -x
+    W means write
+    R means read
+    X means executable
+12.	Remove Guest Account
+-	 /etc/lightdm/users.conf
+
+13.	Malware
+-	Sudo apt install clamscan
+-	Sudo clamav
+
+14.	Check the /etc/hosts file
+-	Remove any other than 127.0.0.1 in ip category
+
+
+// Unwanted/Non-vital services :
+-	ftp (( use command -> sudo apt-get remove pure-ftpd ))
+-	mysql
+-	samba
+-	filezilla
+-	cp
+-	telnet
+-	apache
+-	nginx
+-	Netcat
+-	John 
+-	Nmap
+-	Metasploit
+-	Netcat (( to remove all forms of netcat -> Sudo apt-get purge netcat nc netcat-* ))
+-	Aircrack
+-	Ophcrack
+-	Wireshark
+-	Hydra
+-	Mail – postfix
+-	Gaming apps
