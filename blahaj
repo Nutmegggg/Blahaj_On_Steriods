@@ -1,0 +1,123 @@
+
+CYBER CENTURION FULL CHECKLIST 2023 (incomplete)
+
+•	Then you have two ways to gain points:
+o	Actively (terminal or gui but requres effort)
+o	Passively (uninstalling apps or games and letting updates run)
+
+[These are how to gain points split into Active and Passive]
+-	1. Install firewall 
+o	 Open terminal and type command - “sudo apt install gufw” 
+	This installs the graphical user interface firewall and should look like this when opened:
+o	Once installed turn it on (this should get you points) and then set the incoming to reject and outgoing to allow (secure office settings)
+o	EXTRA STEP: Check in the ports section for any unwanted ports open and close them
+
+ 
+
+-	2. Uninstalling things – scroll down for more detail 
+o	Command to use: “sudo apt autoremove appname” for example if you’re removing wireshark it would be “sudo apt autoremove wireshark” (for older Operating systems it is “sudo apt remove wireshark”)
+
+-	PAM files (complicated and is done through the terminal. This changes rules on when to change passwords or how long a user can use a password. Do this after everything else in case it changes your password access in the GUI)
+o	Cd /etc/pam.d
+o	Sudo apt install libpam-cracklib
+o	Sudo nano common-password
+o	Change line with pan_unix.so remember to 5 “remember=5”
+o	Change line with pam_unix.so minlen to 8
+o	Add line with pam_cracklib.so “ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1” to end of thine
+o	Sudo nano ../login.defs
+o	Scroll to PASS_MAX_DAYS 90
+o	Set PASS_MIN_DAYS to 10
+o	Set PASS_WARN_AGE to 7
+o	Sudo nano common-auth
+o	ADD THIS TO THE BOTTOM OF THE FILE >>
+	auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800
+		((deny sets failed login attempts))
+-	SSH config
+o	IF REQUIRED -> make an ssh server if not already on the system
+	
+
+-	File permissions
+o	Correct file permissions :
+•	Sudo chmod -R 444 /var/log
+•	Sudo chmod 440 /etc/passwd
+•	Sudo chmod 440 /etc/shadow
+•	Sudo chmod 440 /etc/group
+•	Sudo chmod -R 444 /etc/ssh
+o	Insecure file permissions 
+•	To the root of a server local file or passwd file
+•	Chmod -w or -r or -x
+•	W means write
+•	R means read
+•	X means executable
+
+
+//Passive
+	
+-	1 . Updates + Settings - GUI
+o	Check for security updates + security setting changes - type settings into the search applications 
+o	(e.g Daily updates, auto updates, updating ssh or firefox etc)
+o	Run update (do this lunch period)
+
+-	2 . User accounts and admins administration - GUI
+o	Remove unwanted accounts + files
+o	Add the new account/user group ((if READ ME asks)) – ((to make group command -> groupadd))
+o	Remove non approved admins
+o	Make sure admins are admins
+o	Change passwords to more secure passwords
+o	Remove guest account access - /etc/lightdm/users.conf
+
+-	3. Firefox Settings
+o	Change preferences (( e.g no cookies, blocking stuff, warning etc ))
+o	Sidenote : Stop receiving bad cookies -> Sysctl -n net.ipv4.tcp_syncookies
+
+
+//UNINSTALLING AND UNWANTED SERVICES
+To delete stuff in general -> “sudo apt autoremove appname”
+
+// Unwanted/Non-vital services ((remember to check the README before deleting, you will LOSE POINTS IF YOU DELETE NEEDED APPS. If unsure, look it up online)) :
+-	Ftp (check if requred) (( use command -> sudo apt-get remove pure-ftpd ))
+-	Mysql (check if requred)
+-	Samba (check if requred)
+-	filezilla
+-	telnet
+-	apache
+-	Nginx (check if requred)
+-	Netcat
+-	John 
+-	Nmap
+-	Netcat 
+-	Wireshark
+-	Hydra
+-	Mail – postfix
+-	games
+-	generally app folders are found in /etc/ - CHECK IF YOU NEED IT before you delete
+
+// Media + Hidden files 
+Use this command to find a file -> 
+-	sudo locate *insert file* 
+((remember to add *. in front of the file type, if searching for a file type))
+Use command to delete media files -> 
+-	"rm *insert file*"
+-	File example: .jpg, .mp3, .png, .mov, .mp4, .jpeg ((if you look for .png files and there are loads some of those are for app icons so don’t delete those ones))
+-	Delete files called password.txt, members.txt, users.txt etc if it looks suspicious.
+
+// Commands guide
+(if you don’t know a command either ask or use the internet, you can always search things up!)
+-	Within terminal – for copy + paste use “shift + control + C” to copy and “shift + control + V” to paste
+-	“ls” = list – this lists everything in the directory you are currently in inside terminal
+-	“cd” = change directory – this command followed by a file location moves you to another directory in the filesystem. “cd ..” lets you go back a directory in the filesystem
+-	“sudo apt install ____” -  installs any app you type after the command (if it exists)
+-	 visudo - Only main user (you) can use sudo (or only specified accounts!)“locate ____” – this works on ubuntu to locate files that you are looking for.
+-	
+
+
+
+
+
+//LEARN LINUX
+
+-	The best tip you can get for cyber centurion is to get to know linux
+-	Research it online or you can watch videos
+o	Great video that is in ubuntu: https://www.youtube.com/watch?v=JVxkTqLoyGY
+o	Learn about virtual machines and install some: https://www.youtube.com/watch?v=wX75Z-4MEoM
+-	HTB academy has some good starter courses that are free and can teach you about different aspects of linux. Select their defensive courses and they also have a free online virtual machine so have a go with that! https://academy.hackthebox.com/
